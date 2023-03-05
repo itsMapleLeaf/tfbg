@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://crcduga1y4xhm"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_sqbwy"]
+[ext_resource type="PackedScene" uid="uid://dsbu3f4mlj6vs" path="res://map_block.tscn" id="2_k45t1"]
+[ext_resource type="PackedScene" uid="uid://c3govpjuh67lw" path="res://block_shape.tscn" id="3_k8mcs"]
+[ext_resource type="Script" path="res://player.gd" id="3_o7xck"]
+[ext_resource type="Script" path="res://camera.gd" id="5_miv5o"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q5n5u"]
+size = Vector2(3500, 2000)
+
+[node name="Game" type="Node2D"]
+position = Vector2(600, 350)
+script = ExtResource("1_sqbwy")
+
+[node name="Player" type="CharacterBody2D" parent="." node_paths=PackedStringArray("camera", "map_area", "camera_death_point")]
+position = Vector2(0, -250)
+scale = Vector2(0.8, 0.8)
+script = ExtResource("3_o7xck")
+camera = NodePath("../Camera")
+map_area = NodePath("../Map/MapArea")
+camera_death_point = NodePath("../CameraDeathPoint")
+
+[node name="Shape" parent="Player" instance=ExtResource("3_k8mcs")]
+
+[node name="Map" type="Node2D" parent="."]
+
+[node name="MapArea" type="Area2D" parent="Map"]
+monitorable = false
+
+[node name="Shape" type="CollisionShape2D" parent="Map/MapArea"]
+shape = SubResource("RectangleShape2D_q5n5u")
+
+[node name="MapBlock" parent="Map" instance=ExtResource("2_k45t1")]
+scale = Vector2(40, 1)
+
+[node name="MapBlock2" parent="Map" instance=ExtResource("2_k45t1")]
+position = Vector2(0, 50)
+scale = Vector2(38, 1)
+world_position = Vector2(0, 1)
+
+[node name="MapBlock3" parent="Map" instance=ExtResource("2_k45t1")]
+position = Vector2(0, 100)
+scale = Vector2(36, 1)
+world_position = Vector2(0, 2)
+
+[node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("player", "death_point")]
+position = Vector2(0, -330)
+scale = Vector2(0.8, 0.8)
+script = ExtResource("5_miv5o")
+player = NodePath("../Player")
+death_point = NodePath("../CameraDeathPoint")
+
+[node name="CameraDeathPoint" type="Marker2D" parent="."]
+position = Vector2(0, -413)
+gizmo_extents = 190.2
