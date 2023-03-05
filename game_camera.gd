@@ -1,9 +1,10 @@
+class_name GameCamera
 extends Camera2D
 
-@export var player: Player
-@export var death_point: Node2D
+var player: Player
+var pan_out_position: Vector2
 
-const MOVEMENT_LOOK_FACTOR := Vector2(0.65, 0.4)
+const MOVEMENT_LOOK_FACTOR := Vector2(0.65, 0.3)
 const OFFSET := Vector2(0, -80)
 const STIFFNESS := 5
 const LOOK_DISTANCE := 220
@@ -12,6 +13,10 @@ const LOOK_DISTANCE := 220
 var target_zoom := Vector2(1, 1)
 
 func _process(delta: float):
+	print(player)
+
+	if not player: return
+
 	if player.is_alive:
 		target_position = \
 			player.global_position + \
@@ -21,7 +26,7 @@ func _process(delta: float):
 			
 		target_zoom = Vector2(1, 1)
 	else:
-		target_position = death_point.global_position
+		target_position = pan_out_position
 		target_zoom = Vector2(0.5, 0.5)
 	
 	global_position = lerp(global_position, target_position, delta * STIFFNESS)
