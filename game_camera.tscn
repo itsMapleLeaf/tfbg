@@ -6,3 +6,5 @@
 position = Vector2(0, -330)
 scale = Vector2(0.8, 0.8)
 script = ExtResource("1_6487i")
+look_offset = Vector2(350, 180)
+stiffness = 3.0

@@ -1,10 +1,7 @@
 extends Node2D
 
 const BLOCK_SPAWN_HEIGHT_BLOCKS := 20
-
-const CAMERA_MOVEMENT_LOOK_FACTOR := Vector2(0.65, 0.3)
 const CAMERA_OFFSET := Vector2(0, -80)
-const CAMERA_LOOK_DISTANCE := 220
 
 @export var player: Player
 @export var player_spawns: Node2D
@@ -44,13 +41,9 @@ func _kill_player():
 	_respawn_player()
 	
 func _update_camera():
+	camera.look_enabled = player.is_alive
 	if player.is_alive:
-		camera.target_position = \
-			player.global_position + \
-			player.velocity * CAMERA_MOVEMENT_LOOK_FACTOR + \
-			player.look * Vector2(0, CAMERA_LOOK_DISTANCE) + \
-			CAMERA_OFFSET
-			
+		camera.target_position = player.global_position + CAMERA_OFFSET
 		camera.target_zoom = Vector2(1, 1)
 	else:
 		camera.target_position = camera_wide_view_position_node.global_position
