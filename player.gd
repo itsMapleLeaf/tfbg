@@ -9,7 +9,6 @@ const TERMINAL_VELOCITY := 2000
 var movement := 0.0
 var jumps := 2
 var is_alive := false
-var look := 0.0
 
 signal squished
 
@@ -19,8 +18,6 @@ func _process(delta: float) -> void:
 		
 		var target_movement := Input.get_action_strength("right") - Input.get_action_strength("left")
 		movement = lerp(movement, target_movement, clamp(delta * 10, 0, 1))
-			
-		look = Input.get_action_strength("down") - Input.get_action_strength("up")
 
 		velocity.x = movement * PLAYER_SPEED
 		velocity.y += min(GRAVITY * delta, TERMINAL_VELOCITY)

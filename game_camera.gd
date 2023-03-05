@@ -2,7 +2,8 @@ class_name GameCamera
 extends Camera2D
 
 @export var look_offset: Vector2
-@export var stiffness: float
+@export var stiffness: Vector2
+@export var zoom_stiffness: float
 
 var target_position := global_position
 var target_zoom := Vector2(1, 1)
@@ -18,5 +19,6 @@ func _process(delta: float):
 	if look_enabled:
 		target += look_input * look_offset
 	
-	global_position = lerp(global_position, target, delta * stiffness)
-	zoom = lerp(zoom, target_zoom, delta * stiffness)
+	global_position.x = lerp(global_position.x, target.x, delta * stiffness.x)
+	global_position.y = lerp(global_position.y, target.y, delta * stiffness.y)
+	zoom = lerp(zoom, target_zoom, delta * zoom_stiffness)

@@ -47,7 +47,7 @@ func _update_camera():
 		camera.target_zoom = Vector2(1, 1)
 	else:
 		camera.target_position = camera_wide_view_position_node.global_position
-		camera.target_zoom = Vector2(0.75, 0.75)
+		camera.target_zoom = Vector2(0.6, 0.6)
 
 func _spawn_falling_blocks():
 	while true:
