@@ -13,10 +13,6 @@ const LOOK_DISTANCE := 220
 var target_zoom := Vector2(1, 1)
 
 func _process(delta: float):
-	print(player)
-
-	if not player: return
-
 	if player.is_alive:
 		target_position = \
 			player.global_position + \

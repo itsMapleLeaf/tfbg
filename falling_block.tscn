@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cx6cvpvgqdoqi"]
+
+[ext_resource type="Script" path="res://falling_block.gd" id="1_6bfqv"]
+[ext_resource type="PackedScene" uid="uid://c3govpjuh67lw" path="res://block_shape.tscn" id="2_6q2cy"]
+
+[node name="FallingBlock" type="CharacterBody2D"]
+script = ExtResource("1_6bfqv")
+
+[node name="Shape" parent="." instance=ExtResource("2_6q2cy")]
