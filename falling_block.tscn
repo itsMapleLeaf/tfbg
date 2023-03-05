@@ -1,9 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://cx6cvpvgqdoqi"]
+[gd_scene load_steps=6 format=3 uid="uid://bs445vicdunr3"]
 
 [ext_resource type="Script" path="res://falling_block.gd" id="1_6bfqv"]
-[ext_resource type="PackedScene" uid="uid://c3govpjuh67lw" path="res://block_shape.tscn" id="2_6q2cy"]
+[ext_resource type="Script" path="res://falling_block_squish_area.gd" id="2_10pm8"]
 
-[node name="FallingBlock" type="CharacterBody2D"]
+[sub_resource type="QuadMesh" id="QuadMesh_roxfm"]
+size = Vector2(50, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7bikm"]
+size = Vector2(49, 49)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v8no2"]
+size = Vector2(20, 2)
+
+[node name="FallingBlock" type="CharacterBody2D" node_paths=PackedStringArray("shape", "squish_area_shape")]
+collision_layer = 4
+collision_mask = 6
 script = ExtResource("1_6bfqv")
+shape = NodePath("CollisionShape2D")
+squish_area_shape = NodePath("SquishArea/CollisionShape2D")
 
-[node name="Shape" parent="." instance=ExtResource("2_6q2cy")]
+[node name="MeshInstance2D" type="MeshInstance2D" parent="."]
+mesh = SubResource("QuadMesh_roxfm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7bikm")
+
+[node name="SquishArea" type="Area2D" parent="."]
+script = ExtResource("2_10pm8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SquishArea"]
+position = Vector2(0, 26)
+shape = SubResource("RectangleShape2D_v8no2")

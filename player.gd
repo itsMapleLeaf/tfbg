@@ -11,6 +11,8 @@ var jumps := 2
 var is_alive := false
 var look := 0.0
 
+signal squished
+
 func _process(delta: float) -> void:
 	if is_alive:
 		modulate.a = lerp(modulate.a, 1.0, delta * 5)
@@ -22,12 +24,9 @@ func _process(delta: float) -> void:
 
 		velocity.x = movement * PLAYER_SPEED
 		velocity.y += min(GRAVITY * delta, TERMINAL_VELOCITY)
-
 		move_and_slide()
-
-		var collision := get_last_slide_collision()
-		if collision && collision.get_normal().y < 0:
-			jumps = 2
+		
+		if is_on_floor(): jumps = 2
 	else:
 		modulate.a = 0
 
@@ -38,7 +37,7 @@ func _input(event: InputEvent):
 
 func respawn(pos: Vector2):
 	is_alive = true
-	position = pos
+	global_position = pos
 	velocity = Vector2(0, 0)
 	modulate.a = 0
 	movement = 0

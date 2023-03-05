@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://c3govpjuh67lw"]
+[gd_scene load_steps=5 format=3 uid="uid://c3govpjuh67lw"]
+
+[ext_resource type="Script" path="res://block_shape.gd" id="1_o11cl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gwmt0"]
 size = Vector2(50, 50)
@@ -10,6 +12,7 @@ size = Vector2(50, 50)
 
 [node name="Shape" type="CollisionShape2D"]
 shape = SubResource("RectangleShape2D_gwmt0")
+script = ExtResource("1_o11cl")
 
 [node name="Mesh" type="MeshInstance2D" parent="."]
 mesh = SubResource("QuadMesh_mhk8f")

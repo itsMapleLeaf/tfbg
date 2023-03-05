@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsbu3f4mlj6vs"]
+[gd_scene load_steps=4 format=3 uid="uid://dsbu3f4mlj6vs"]
 
+[ext_resource type="Script" path="res://map_block.gd" id="1_u5kyg"]
 [ext_resource type="PackedScene" uid="uid://c3govpjuh67lw" path="res://block_shape.tscn" id="2_kdvum"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pv7gp"]
 
 [node name="MapBlock" type="StaticBody2D"]
+collision_layer = 2
+collision_mask = 0
 physics_material_override = SubResource("PhysicsMaterial_pv7gp")
+script = ExtResource("1_u5kyg")
 
 [node name="Shape" parent="." instance=ExtResource("2_kdvum")]

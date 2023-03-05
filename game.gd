@@ -1,61 +1,73 @@
 extends Node2D
 
-const MAP_PLATFORM_WIDTH_BLOCKS := 40
-const PLAYER_SPAWN_HEIGHT_BLOCKS := 6
 const BLOCK_SPAWN_HEIGHT_BLOCKS := 20
-const PLAYER_FALLOUT_DEPTH := 2000
 
-var map_block_scene := preload("res://map_block.tscn")
-var player_scene := preload("res://player.tscn")
-var camera_scene := preload("res://game_camera.tscn")
-var falling_block_scene := preload("res://falling_block.tscn")
+const CAMERA_MOVEMENT_LOOK_FACTOR := Vector2(0.65, 0.3)
+const CAMERA_OFFSET := Vector2(0, -80)
+const CAMERA_LOOK_DISTANCE := 220
 
-@onready var player := player_scene.instantiate() as Player
+@export var player: Player
+@export var player_spawns: Node2D
+@export var player_fallout: Node2D
+
+@export var camera: GameCamera
+@export var camera_wide_view_position_node: Node2D
+
+@export var map: GameMap
+
+@export var falling_block_spawn_left: Node2D
+@export var falling_block_spawn_right: Node2D
 
 func _ready():
-	_create_map_blocks()
+	_respawn_player()
 	
-	add_child(player)
-	
-	var camera := camera_scene.instantiate() as GameCamera
-	camera.player = player
-	camera.pan_out_position = Vector2(0, -PLAYER_SPAWN_HEIGHT_BLOCKS) * Globals.BLOCK_SIZE_PIXELS
-	add_child(camera)
-	
-	player.respawn(_get_player_spawn_position())
+	_update_camera()
+	camera.reset_smoothing()
 	
 	_spawn_falling_blocks()
 	
-func _create_map_blocks():
-	for i in 3:
-		var block := map_block_scene.instantiate() as StaticBody2D
-		block.position = Vector2(0, i) * Globals.BLOCK_SIZE_PIXELS
-		block.scale = Vector2(MAP_PLATFORM_WIDTH_BLOCKS - i * 2, 1)
-		add_child(block)
-
-func _create_player():
-	player.respawn(_get_player_spawn_position())
-	
-func _get_map_spawn_x_position() -> float:
-	return randi_range(0, MAP_PLATFORM_WIDTH_BLOCKS) - MAP_PLATFORM_WIDTH_BLOCKS / 2
-
-func _get_player_spawn_position() -> Vector2:
-	return Vector2(_get_map_spawn_x_position(), -PLAYER_SPAWN_HEIGHT_BLOCKS) * Globals.BLOCK_SIZE_PIXELS
+	player.squished.connect(_kill_player)
 
 func _process(delta: float):
-	if player.global_position.y >= PLAYER_FALLOUT_DEPTH && player.is_alive:
-		_kill_player(player)
+	_update_camera()
+	if player.global_position.y >= player_fallout.global_position.y && player.is_alive:
+		_kill_player()
 
-func _kill_player(player: Player):
+func _respawn_player():
+	var spawn_count := player_spawns.get_child_count()
+	var spawn := player_spawns.get_child(randi() % spawn_count) as Node2D
+	player.respawn(spawn.global_position)
+
+func _kill_player():
 	player.kill()
 	await get_tree().create_timer(2).timeout
-	player.respawn(_get_player_spawn_position())
-
+	_respawn_player()
+	
+func _update_camera():
+	if player.is_alive:
+		camera.target_position = \
+			player.global_position + \
+			player.velocity * CAMERA_MOVEMENT_LOOK_FACTOR + \
+			player.look * Vector2(0, CAMERA_LOOK_DISTANCE) + \
+			CAMERA_OFFSET
+			
+		camera.target_zoom = Vector2(1, 1)
+	else:
+		camera.target_position = camera_wide_view_position_node.global_position
+		camera.target_zoom = Vector2(0.75, 0.75)
 
 func _spawn_falling_blocks():
 	while true:
-		var block := falling_block_scene.instantiate() as CharacterBody2D
-		block.position = Vector2(_get_map_spawn_x_position(), -BLOCK_SPAWN_HEIGHT_BLOCKS) * Globals.BLOCK_SIZE_PIXELS
+		var block := preload("res://falling_block.tscn").instantiate() as FallingBlock
+		block.global_position = Vector2(
+			round_to_nearest(
+				randf_range(falling_block_spawn_left.global_position.x, falling_block_spawn_right.global_position.x),
+				50.0,
+			),
+			randf_range(falling_block_spawn_left.global_position.y, falling_block_spawn_right.global_position.y),
+		)
 		add_child(block)
 		await get_tree().create_timer(0.5).timeout
 
+func round_to_nearest(num: float, multiple: float) -> float:
+	return round(num / multiple) * multiple
