@@ -22,7 +22,7 @@ var uses_input := false
 
 @onready var grabbed_block_origin := grabbed_block.position
 
-signal block_released(position: Vector2, direction: int, owner_player: Player)
+signal block_released(position: Vector2, direction: int)
 
 func _process(delta: float) -> void:
 	if is_alive:
@@ -72,7 +72,7 @@ func _input(event: InputEvent):
 	
 	elif event.is_action_released("grab") && grabbing:
 		grabbing = false
-		block_released.emit(grab_dot.global_position, facing, self)
+		block_released.emit(grab_dot.global_position, facing)
 
 	elif event.is_action_pressed("jump") && jumps > 0:
 		velocity.y = -JUMP_SPEED

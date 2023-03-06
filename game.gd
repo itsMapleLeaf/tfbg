@@ -37,7 +37,7 @@ func _process(delta: float):
 
 func _create_player() -> Player:
 	var player := preload("res://player.tscn").instantiate() as Player
-	player.block_released.connect(_create_flying_block)
+	player.block_released.connect(_create_flying_block.bind(player))
 	players.append(player)
 	add_child(player)
 	_respawn_player(player)
