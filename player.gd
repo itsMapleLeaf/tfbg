@@ -17,7 +17,7 @@ var movement := 0.0
 var target_movement := 0.0
 var jumps := 2
 var is_alive := false
-var facing := Direction.RIGHT
+var direction := Direction.RIGHT
 var grabbing := false
 
 @onready var grabbed_block_origin := grabbed_block.position
@@ -43,7 +43,7 @@ func _process(delta: float) -> void:
 	grabbed_block.position = lerp(grabbed_block.position, grabbed_block_origin, delta * GRAB_STIFFNESS)
 	
 	# https://godotengine.org/qa/92282/why-my-character-scale-keep-changing?show=146969#a146969
-	match facing:
+	match direction:
 		Direction.RIGHT:
 			scale.y = 1
 			rotation_degrees = 0
@@ -53,8 +53,9 @@ func _process(delta: float) -> void:
 
 func set_movement(movement: float):
 	target_movement = movement
-	if movement != 0.0:
-		facing = signi(movement)
+	
+	var new_direction = signi(movement)
+	if new_direction != 0.0: direction = new_direction
 		
 func jump():
 	if jumps < 0: return
@@ -73,7 +74,7 @@ func grab():
 func release():
 	if not grabbing: return
 	grabbing = false
-	block_released.emit(grab_dot.global_position, facing)
+	block_released.emit(grab_dot.global_position, direction)
 
 func respawn(pos: Vector2):
 	is_alive = true
