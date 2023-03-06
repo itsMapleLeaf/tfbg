@@ -19,7 +19,9 @@ const CAMERA_OFFSET := Vector2(0, -80)
 
 func _ready():
 	main_player = _create_player()
-	main_player.uses_input = true
+	
+	var controller := preload("res://player_human_controller.gd").new(main_player)
+	main_player.add_child(controller)
 
 	_create_player()
 	
