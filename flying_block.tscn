@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://34h28l303jnu"]
+
+[ext_resource type="Script" path="res://flying_block.gd" id="1_2u7w8"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_4msmw"]
+size = Vector2(50, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_47ksm"]
+size = Vector2(49, 49)
+
+[node name="FlyingBlock" type="Area2D"]
+collision_layer = 0
+collision_mask = 7
+script = ExtResource("1_2u7w8")
+speed = 800.0
+freeze_time = 0.2
+max_hits = 2
+max_life = 2.0
+
+[node name="Mesh" type="MeshInstance2D" parent="."]
+mesh = SubResource("QuadMesh_4msmw")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_47ksm")

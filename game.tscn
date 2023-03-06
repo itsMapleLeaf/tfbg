@@ -6,9 +6,8 @@
 [ext_resource type="Script" path="res://game_map.gd" id="4_hpcjy"]
 [ext_resource type="PackedScene" uid="uid://bc5i5ftupwbx4" path="res://game_camera.tscn" id="4_ohoh2"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("player", "player_spawns", "player_fallout", "camera", "camera_wide_view_position_node", "map", "falling_block_spawn_left", "falling_block_spawn_right")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("player_spawns", "player_fallout", "camera", "camera_wide_view_position_node", "map", "falling_block_spawn_left", "falling_block_spawn_right")]
 script = ExtResource("1_sqbwy")
-player = NodePath("Player")
 player_spawns = NodePath("PlayerSpawns")
 player_fallout = NodePath("Fallout")
 camera = NodePath("Camera")
