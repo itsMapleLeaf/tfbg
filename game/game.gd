@@ -12,8 +12,6 @@ var main_player: Player
 @export var camera: GameCamera
 @export var camera_wide_view_position_node: Node2D
 
-@export var map: GameMap
-
 @export var falling_block_spawn_left: Node2D
 @export var falling_block_spawn_right: Node2D
 

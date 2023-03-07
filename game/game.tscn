@@ -1,17 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://u5slcikl4yah"]
+[gd_scene load_steps=4 format=3 uid="uid://u5slcikl4yah"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_sqbwy"]
 [ext_resource type="PackedScene" path="res://game/game_camera.tscn" id="2_lied0"]
 [ext_resource type="PackedScene" path="res://blocks/map_block.tscn" id="3_iqabn"]
-[ext_resource type="Script" path="res://game/game_map.gd" id="4_hpcjy"]
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("player_spawns", "player_fallout", "camera", "camera_wide_view_position_node", "map", "falling_block_spawn_left", "falling_block_spawn_right")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("player_spawns", "player_fallout", "camera", "camera_wide_view_position_node", "falling_block_spawn_left", "falling_block_spawn_right")]
 script = ExtResource("1_sqbwy")
 player_spawns = NodePath("PlayerSpawns")
 player_fallout = NodePath("Fallout")
 camera = NodePath("Camera")
 camera_wide_view_position_node = NodePath("CameraWideViewPosition")
-map = NodePath("GameMap")
 falling_block_spawn_left = NodePath("FallingBlockSpawnLeft")
 falling_block_spawn_right = NodePath("FallingBlockSpawnRight")
 
@@ -22,7 +20,6 @@ position = Vector2(0, -200)
 gizmo_extents = 50.0
 
 [node name="GameMap" type="Node2D" parent="."]
-script = ExtResource("4_hpcjy")
 
 [node name="MapBlock" parent="GameMap" instance=ExtResource("3_iqabn")]
 scale = Vector2(31, 1)
