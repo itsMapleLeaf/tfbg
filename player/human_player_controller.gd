@@ -1,5 +1,5 @@
 extends Node
-class_name PlayerHumanController
+class_name HumanPlayerController
 
 var _player: Player
 

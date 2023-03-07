@@ -4,8 +4,8 @@ class_name Game
 const BLOCK_SPAWN_HEIGHT_BLOCKS := 20
 const CAMERA_OFFSET := Vector2(0, -80)
 
-@export var players: Array[Player] = []
-@export var main_player: Player
+var players: Array[Player] = []
+var main_player: Player
 @export var player_spawns: Node2D
 @export var player_fallout: Node2D
 
@@ -20,7 +20,7 @@ const CAMERA_OFFSET := Vector2(0, -80)
 func _ready():
 	main_player = _create_player()
 	
-	var controller := preload("res://player_human_controller.gd").new(main_player)
+	var controller := preload("res://player/human_player_controller.gd").new(main_player)
 	main_player.add_child(controller)
 
 	_create_player()
@@ -38,7 +38,7 @@ func _process(delta: float):
 	_update_camera(main_player)
 
 func _create_player() -> Player:
-	var player := preload("res://player.tscn").instantiate() as Player
+	var player := preload("res://player/player.tscn").instantiate() as Player
 	player.block_released.connect(_create_flying_block.bind(player))
 	players.append(player)
 	add_child(player)
@@ -72,13 +72,13 @@ func _spawn_falling_blocks():
 		await get_tree().create_timer(0.5).timeout
 
 func _create_falling_block(position: Vector2):
-	var block := preload("res://falling_block.tscn").instantiate() as FallingBlock
+	var block := preload("res://blocks/falling_block.tscn").instantiate() as FallingBlock
 	block.global_position = position
 	block.player_squished.connect(_kill_player)
 	add_child(block)
 
 func _create_flying_block(position: Vector2, direction: int, owner_player: Player):
-	var block := preload("res://flying_block.tscn").instantiate() as FlyingBlock
+	var block := preload("res://blocks/flying_block.tscn").instantiate() as FlyingBlock
 	block.global_position = position
 	block.direction = direction
 	block.owner_player = owner_player

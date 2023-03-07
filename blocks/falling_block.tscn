@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://bs445vicdunr3"]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://falling_block.gd" id="1_6bfqv"]
+[ext_resource type="Script" path="res://blocks/falling_block.gd" id="1_6bfqv"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_roxfm"]
 size = Vector2(50, 50)
