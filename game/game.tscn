@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://u5slcikl4yah"]
 
 [ext_resource type="Script" path="res://game/game.gd" id="1_sqbwy"]
-[ext_resource type="PackedScene" path="res://game/game_camera.tscn" id="2_lied0"]
-[ext_resource type="PackedScene" path="res://blocks/map_block.tscn" id="3_iqabn"]
+[ext_resource type="PackedScene" uid="uid://c8bicjtdgxa1s" path="res://game/game_camera.tscn" id="2_lied0"]
+[ext_resource type="PackedScene" uid="uid://c51q2dqjhv766" path="res://blocks/map_block.tscn" id="3_iqabn"]
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("player_spawns", "player_fallout", "camera", "camera_wide_view_position_node", "falling_block_spawn_left", "falling_block_spawn_right")]
 script = ExtResource("1_sqbwy")

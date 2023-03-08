@@ -5,10 +5,10 @@ const BLOCK_SPAWN_HEIGHT_BLOCKS := 20
 const CAMERA_OFFSET := Vector2(0, -80)
 
 @onready var players: Array[Player] = [
-	_create_player(preload("res://player/human_player_controller.gd").new()),
-	_create_player(preload("res://player/robot_player_controller.tscn").instantiate()),
-	_create_player(preload("res://player/robot_player_controller.tscn").instantiate()),
-	_create_player(preload("res://player/robot_player_controller.tscn").instantiate()),
+	_create_player(Color.from_string("#f46078", Color.WHITE), preload("res://player/human_player_controller.gd").new()),
+	_create_player(Color.from_string("#c174f5", Color.WHITE), preload("res://player/robot_player_controller.tscn").instantiate()),
+	_create_player(Color.from_string("#c174f5", Color.WHITE), preload("res://player/robot_player_controller.tscn").instantiate()),
+	_create_player(Color.from_string("#c174f5", Color.WHITE), preload("res://player/robot_player_controller.tscn").instantiate()),
 ]
 @onready var main_player := players[0]
 @export var player_spawns: Node2D
@@ -35,8 +35,9 @@ func _process(delta: float):
 			
 	_update_camera(main_player)
 
-func _create_player(controller: Node) -> Player:
+func _create_player(color: Color, controller: Node) -> Player:
 	var player := preload("res://player/player.tscn").instantiate() as Player
+	player.modulate = color
 	player.block_released.connect(_create_flying_block.bind(player))
 	player.add_child(controller)
 	add_child(player)
@@ -56,7 +57,7 @@ func _update_camera(player: Player):
 	camera.look_enabled = player.is_alive
 	if player.is_alive:
 		camera.target_position = player.global_position + CAMERA_OFFSET
-		camera.target_zoom = Vector2(1, 1)
+		camera.target_zoom = Vector2(1.2, 1.2)
 	else:
 		camera.target_position = camera_wide_view_position_node.global_position
 		camera.target_zoom = Vector2(0.6, 0.6)

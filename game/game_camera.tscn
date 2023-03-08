@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://c8bicjtdgxa1s"]
 
 [ext_resource type="Script" path="res://game/game_camera.gd" id="1_6487i"]
 
