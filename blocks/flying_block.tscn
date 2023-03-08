@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://biibcqm0fva7t"]
 
 [ext_resource type="Script" path="res://blocks/flying_block.gd" id="1_2u7w8"]
 
@@ -9,8 +9,8 @@ size = Vector2(50, 50)
 size = Vector2(49, 49)
 
 [node name="FlyingBlock" type="Area2D"]
-collision_layer = 0
-collision_mask = 7
+collision_layer = 8
+collision_mask = 23
 script = ExtResource("1_2u7w8")
 speed = 800.0
 freeze_time = 0.2

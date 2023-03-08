@@ -1,10 +1,7 @@
 extends Node
 class_name HumanPlayerController
 
-var _player: Player
-
-func _init(player: Player):
-	_player = player
+@onready var _player := get_parent() as Player
 
 func _process(delta: float):
 	_player.set_movement(Input.get_action_strength("right") - Input.get_action_strength("left"))

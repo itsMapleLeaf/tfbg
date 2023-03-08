@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://dcbfqo5h3e7d2"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_nwt4s"]
 
@@ -22,7 +22,6 @@ grab_dot = NodePath("GrabDot")
 grabbed_block = NodePath("GrabbedBlock")
 
 [node name="Mesh" type="MeshInstance2D" parent="."]
-scale = Vector2(1, 1)
 mesh = SubResource("QuadMesh_y3n50")
 
 [node name="Hitbox" type="CollisionPolygon2D" parent="."]
@@ -43,3 +42,5 @@ shape = SubResource("RectangleShape2D_ldhkw")
 visible = false
 position = Vector2(60, 0)
 mesh = SubResource("QuadMesh_iqsty")
+
+[connection signal="body_entered" from="GrabDot" to="." method="_on_grab_dot_body_entered"]

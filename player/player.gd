@@ -8,6 +8,7 @@ const JUMP_SPEED := 800
 const TERMINAL_VELOCITY := 2000
 const GRAB_STIFFNESS := 12
 
+enum State { IDLE, GRABBING, DEAD }
 enum Direction { LEFT = -1, RIGHT = 1 }
 
 @export var grab_dot: Area2D
@@ -16,13 +17,19 @@ enum Direction { LEFT = -1, RIGHT = 1 }
 var movement := 0.0
 var target_movement := 0.0
 var jumps := 2
-var is_alive := false
 var direction := Direction.RIGHT
-var grabbing := false
+var state := State.IDLE
 
 @onready var grabbed_block_origin := grabbed_block.position
 
 signal block_released(position: Vector2, direction: int)
+signal found_block
+
+var is_alive:
+	get: return state != State.DEAD
+	
+var grabbing:
+	get: return state == State.GRABBING
 
 func _process(delta: float) -> void:
 	if is_alive:
@@ -33,8 +40,6 @@ func _process(delta: float) -> void:
 		velocity.x = movement * PLAYER_SPEED
 		velocity.y += min(GRAVITY * delta, TERMINAL_VELOCITY)
 		move_and_slide()
-		
-		if is_on_floor(): jumps = 2
 	else:
 		modulate.a = 0
 
@@ -51,39 +56,57 @@ func _process(delta: float) -> void:
 			scale.y = -1
 			rotation_degrees = 180
 
-func set_movement(movement: float):
-	target_movement = movement
+func _physics_process(delta):
+	if is_on_floor(): jumps = 2
+
+func set_movement(new_movement: float):
+	target_movement = signf(new_movement)
 	
-	var new_direction = signi(movement)
+	var new_direction = sign(new_movement)
 	if new_direction != 0.0: direction = new_direction
-		
+
 func jump():
-	if jumps < 0: return
+	if not is_alive: return
+	if jumps <= 0: return
 	velocity.y = -JUMP_SPEED
 	jumps -= 1
 
-func grab():
-	if grabbing: return
-	for body in grab_dot.get_overlapping_bodies():
-		if body is FallingBlock:
-			grabbing = true
-			grabbed_block.global_position = body.global_position
-			body.queue_free()
-			break
+func grab() -> bool:
+	if state != State.IDLE: return false
+	
+	var block := get_grabbable_block()
+	if not block is FallingBlock: return false
+	
+	state = State.GRABBING
+	grabbed_block.global_position = block.global_position
+	block.queue_free()
+	return true
 
 func release():
-	if not grabbing: return
-	grabbing = false
+	if state != State.GRABBING: return false
+	state = State.IDLE
 	block_released.emit(grab_dot.global_position, direction)
 
 func respawn(pos: Vector2):
-	is_alive = true
 	global_position = pos
 	velocity = Vector2(0, 0)
 	modulate.a = 0
 	movement = 0
+	await get_tree().physics_frame # wait until positions and such are resolved before allowing grabbing
+	state = State.IDLE
 
 func kill():
-	is_alive = false
-	grabbing = false
+	state = State.DEAD
 	jumps = 0
+
+func get_grabbable_block() -> Object:
+	if not is_alive: return null
+	if grabbing: return null
+	for body in grab_dot.get_overlapping_bodies():
+		if body is FallingBlock:
+			return body
+	return null
+
+func _on_grab_dot_body_entered(body):
+	if body is FallingBlock:
+		found_block.emit()

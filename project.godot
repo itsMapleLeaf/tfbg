@@ -18,6 +18,16 @@ config/features=PackedStringArray("4.0", "Forward Plus")
 
 Globals="*res://globals.gd"
 
+[debug]
+
+gdscript/warnings/unused_parameter=0
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/stretch/mode="canvas_items"
+
 [dotnet]
 
 project/assembly_name="That Falling Box Game"
@@ -77,3 +87,5 @@ grab={
 2d_physics/layer_1="Players"
 2d_physics/layer_2="Map Blocks"
 2d_physics/layer_3="Falling Blocks"
+2d_physics/layer_4="Flying Blocks"
+2d_physics/layer_5="Flying Block Target"
