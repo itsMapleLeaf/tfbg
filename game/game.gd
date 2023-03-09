@@ -49,9 +49,9 @@ func _respawn_player(player: Player):
 	player.respawn(spawn.global_position)
 
 func _kill_player(player: Player):
-	player.kill()
-	await get_tree().create_timer(2).timeout
-	_respawn_player(player)
+	if player.kill():
+		await get_tree().create_timer(2).timeout
+		_respawn_player(player)
 	
 func _update_camera(player: Player):
 	camera.look_enabled = player.is_alive

@@ -7,6 +7,7 @@ const GRAVITY := 2000
 const JUMP_SPEED := 800
 const TERMINAL_VELOCITY := 2000
 const GRAB_STIFFNESS := 12
+const MAX_INVULNERABLE_TIME := 1.0
 
 enum State { IDLE, GRABBING, DEAD }
 enum Direction { LEFT = -1, RIGHT = 1 }
@@ -19,29 +20,35 @@ var target_movement := 0.0
 var jumps := 2
 var direction := Direction.RIGHT
 var state := State.IDLE
+var invulnerable_time := MAX_INVULNERABLE_TIME
 
 @onready var grabbed_block_origin := grabbed_block.position
 
 signal block_released(position: Vector2, direction: int)
 signal found_block
 
-var is_alive:
+var is_alive: bool:
 	get: return state != State.DEAD
 	
-var grabbing:
+var grabbing: bool:
 	get: return state == State.GRABBING
 
 func _process(delta: float) -> void:
 	if is_alive:
-		modulate.a = lerp(modulate.a, 1.0, delta * 5)
-		
-		movement = lerp(movement, target_movement, clamp(delta * 10, 0, 1))
+		movement = lerpf(movement, target_movement, clampf(delta * 10, 0, 1))
 
 		velocity.x = movement * PLAYER_SPEED
-		velocity.y += min(GRAVITY * delta, TERMINAL_VELOCITY)
+		velocity.y += minf(GRAVITY * delta, TERMINAL_VELOCITY)
 		move_and_slide()
-	else:
+		
+		invulnerable_time -= delta
+
+	if not is_alive:
 		modulate.a = 0
+	elif invulnerable_time > 0:
+		modulate.a = floori(invulnerable_time / 0.1) % 2
+	else:
+		modulate.a = 1
 
 	grabbed_block.visible = grabbing
 	grab_dot.visible = !grabbing
@@ -92,12 +99,17 @@ func respawn(pos: Vector2):
 	velocity = Vector2(0, 0)
 	modulate.a = 0
 	movement = 0
+	invulnerable_time = 1
+	
 	await get_tree().physics_frame # wait until positions and such are resolved before allowing grabbing
 	state = State.IDLE
 
-func kill():
+func kill() -> bool:
+	if invulnerable_time > 0: return false
+	
 	state = State.DEAD
 	jumps = 0
+	return true
 
 func get_grabbable_block() -> Object:
 	if not is_alive: return null
