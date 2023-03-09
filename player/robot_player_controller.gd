@@ -6,16 +6,21 @@ class_name RobotPlayerController
 
 func _ready():
 	call_deferred("_run_random_loop", 0.5, 3, player.jump)
+	call_deferred("_run_movement_loop")
 	call_deferred("_run_decision_loop")
 
-func _process(delta: float):
-	# danger scenario: we're falling towards a player with a block and have no extra jumps to dodge it
-	_avoid_falling_towards_grabbing_player_without_jumps()
-	
-	if player.global_position.x < -15 * 50 and player.movement < 0:
-		player.set_movement(1)
-	if player.global_position.x > 15 * 50 and player.movement > 0:
-		player.set_movement(-1)
+func _run_movement_loop():
+	while true:
+		# danger scenario: we're falling towards a player with a block and have no extra jumps to dodge it
+		_avoid_falling_towards_grabbing_player_without_jumps()
+
+		if player.global_position.x < -13 * 50 and player.movement < 0:
+			player.set_movement(1)
+		if player.global_position.x > 13 * 50 and player.movement > 0:
+			player.set_movement(-1)
+			
+		await _random_timer(0.1, 0.3).timeout
+		
 		
 func _run_decision_loop():
 	while true:
