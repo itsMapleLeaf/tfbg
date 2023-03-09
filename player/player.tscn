@@ -18,6 +18,7 @@ size = Vector2(50, 50)
 modulate = Color(0.752941, 0.415686, 1, 1)
 collision_mask = 6
 slide_on_ceiling = false
+floor_max_angle = 0.0
 script = ExtResource("1_nwt4s")
 grab_dot = NodePath("GrabDot")
 grabbed_block = NodePath("GrabbedBlock")
