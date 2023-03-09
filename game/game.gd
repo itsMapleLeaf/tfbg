@@ -57,10 +57,10 @@ func _update_camera(player: Player):
 	camera.look_enabled = player.is_alive
 	if player.is_alive:
 		camera.target_position = player.global_position + CAMERA_OFFSET
-		camera.target_zoom = Vector2(1.2, 1.2)
+		camera.target_zoom = Vector2(1.5, 1.5)
 	else:
 		camera.target_position = camera_wide_view_position_node.global_position
-		camera.target_zoom = Vector2(0.6, 0.6)
+		camera.target_zoom = Vector2(0.8, 0.8)
 
 func _spawn_falling_blocks():
 	while true:
