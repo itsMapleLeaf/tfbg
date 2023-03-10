@@ -19,6 +19,7 @@ func _process(delta: float):
 	life -= delta
 	if life < 0:
 		queue_free()
+		Explosion.create(self)
 		return
 	
 	if current_freeze_time > 0:
@@ -28,7 +29,7 @@ func _process(delta: float):
 	for body in get_overlapping_bodies():
 		if body is FallingBlock:
 			if remaining_hits > 0:
-				body.queue_free()
+				body.destroy()
 				current_freeze_time = freeze_time
 				remaining_hits -= 1
 			else:

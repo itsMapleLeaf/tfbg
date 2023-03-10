@@ -62,5 +62,9 @@ func _move(movement: float):
 			
 	position += Vector2(0, movement)
 
+func destroy():
+	queue_free()
+	Explosion.create(self)
+
 func round_to_nearest(num: float, multiple: float) -> float:
 	return round(num / multiple) * multiple

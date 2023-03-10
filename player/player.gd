@@ -109,6 +109,9 @@ func kill() -> bool:
 	
 	state = State.DEAD
 	jumps = 0
+	
+	Explosion.create(self)
+	
 	return true
 
 func get_grabbable_block() -> Object:
