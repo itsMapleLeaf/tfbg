@@ -2,6 +2,7 @@ extends GPUParticles2D
 class_name Explosion
 
 func _ready():
+	emitting = true
 	one_shot = true
 	modulate.a = 1
 
