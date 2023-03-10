@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_nwt4s"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_y3n50"]
-size = Vector2(41, 41)
-
 [sub_resource type="QuadMesh" id="QuadMesh_wygou"]
 size = Vector2(6, 6)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ldhkw"]
 size = Vector2(16, 16)
+
+[sub_resource type="QuadMesh" id="QuadMesh_y3n50"]
+size = Vector2(41, 41)
 
 [sub_resource type="QuadMesh" id="QuadMesh_iqsty"]
 size = Vector2(50, 50)
@@ -20,29 +20,31 @@ collision_mask = 6
 slide_on_ceiling = false
 floor_max_angle = 0.0
 script = ExtResource("1_nwt4s")
-grab_dot = NodePath("GrabDot")
-grabbed_block = NodePath("GrabbedBlock")
+grab_dot = NodePath("Body/GrabDot")
+grabbed_block = NodePath("Body/GrabbedBlock")
 
-[node name="Mesh" type="MeshInstance2D" parent="."]
-mesh = SubResource("QuadMesh_y3n50")
+[node name="Body" type="Node2D" parent="."]
 
-[node name="Hitbox" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(10, 20, 20, 10, 20, -10, 10, -20, -10, -20, -20, -10, -20, 10, -10, 20)
-
-[node name="GrabDot" type="Area2D" parent="."]
+[node name="GrabDot" type="Area2D" parent="Body"]
 position = Vector2(60, 0)
 collision_layer = 0
 collision_mask = 4
 
-[node name="Mesh" type="MeshInstance2D" parent="GrabDot"]
+[node name="Mesh" type="MeshInstance2D" parent="Body/GrabDot"]
 mesh = SubResource("QuadMesh_wygou")
 
-[node name="Shape" type="CollisionShape2D" parent="GrabDot"]
+[node name="Shape" type="CollisionShape2D" parent="Body/GrabDot"]
 shape = SubResource("RectangleShape2D_ldhkw")
 
-[node name="GrabbedBlock" type="MeshInstance2D" parent="."]
+[node name="BodyMesh" type="MeshInstance2D" parent="Body"]
+mesh = SubResource("QuadMesh_y3n50")
+
+[node name="GrabbedBlock" type="MeshInstance2D" parent="Body"]
 visible = false
 position = Vector2(60, 0)
 mesh = SubResource("QuadMesh_iqsty")
 
-[connection signal="body_entered" from="GrabDot" to="." method="_on_grab_dot_body_entered"]
+[node name="Hitbox" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(10, 20, 20, 10, 20, -10, 10, -20, -10, -20, -20, -10, -20, 10, -10, 20)
+
+[connection signal="body_entered" from="Body/GrabDot" to="." method="_on_grab_dot_body_entered"]
