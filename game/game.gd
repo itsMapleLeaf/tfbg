@@ -16,6 +16,7 @@ const CAMERA_OFFSET := Vector2(0, -80)
 
 @export var camera: GameCamera
 @export var camera_wide_view_position_node: Node2D
+@export var camera_shaker: CameraShaker
 
 @export var falling_block_spawn_left: Node2D
 @export var falling_block_spawn_right: Node2D
@@ -50,6 +51,7 @@ func _respawn_player(player: Player):
 
 func _kill_player(player: Player):
 	if player.kill():
+		camera_shaker.shake()
 		await get_tree().create_timer(2).timeout
 		_respawn_player(player)
 	
@@ -73,6 +75,8 @@ func _create_falling_block(new_position: Vector2):
 	var block := preload("res://blocks/falling_block.tscn").instantiate() as FallingBlock
 	block.global_position = new_position
 	block.player_squished.connect(_kill_player)
+	block.destroyed.connect(camera_shaker.shake.bind(0.5))
+	block.grounded.connect(camera_shaker.shake.bind(0.1))
 	add_child(block)
 
 func _create_flying_block(new_position: Vector2, direction: int, owner_player: Player):
@@ -82,4 +86,5 @@ func _create_flying_block(new_position: Vector2, direction: int, owner_player: P
 	block.owner_player = owner_player
 	block.hits_exhausted.connect(func (): _create_falling_block(block.global_position))
 	block.player_hit.connect(_kill_player)
+	block.destroyed.connect(camera_shaker.shake.bind(0.4))
 	add_child(block)

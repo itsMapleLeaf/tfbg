@@ -19,6 +19,8 @@ var life := 10.0
 var speed := 0.0
 
 signal player_squished(player: Player)
+signal grounded
+signal destroyed
 
 func _process(delta: float):
 	position.x = lerp(position.x, round_to_nearest(position.x, 50.0), delta * position_snap_stiffness)
@@ -58,6 +60,7 @@ func _move(movement: float):
 		if collider is MapBlock or (collider is FallingBlock and collider.state == State.STATIC):
 			position += collision.get_travel()
 			state = State.STATIC
+			grounded.emit()
 			return
 			
 	position += Vector2(0, movement)
@@ -65,6 +68,7 @@ func _move(movement: float):
 func destroy():
 	queue_free()
 	Explosion.create(self)
+	destroyed.emit()
 
 func round_to_nearest(num: float, multiple: float) -> float:
 	return round(num / multiple) * multiple

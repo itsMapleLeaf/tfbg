@@ -14,12 +14,14 @@ var current_freeze_time := 0.0
 
 signal hits_exhausted
 signal player_hit(player: Player)
+signal destroyed
 
 func _process(delta: float):
 	life -= delta
 	if life < 0:
 		queue_free()
 		Explosion.create(self)
+		destroyed.emit()
 		return
 	
 	if current_freeze_time > 0:
