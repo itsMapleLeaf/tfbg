@@ -11,7 +11,7 @@ size = Vector2(49, 49)
 [node name="FlyingBlock" type="Area2D"]
 modulate = Color(0.309804, 0.882353, 0.376471, 1)
 collision_layer = 8
-collision_mask = 23
+collision_mask = 31
 script = ExtResource("1_2u7w8")
 speed = 800.0
 freeze_time = 0.2

@@ -16,22 +16,29 @@ signal hits_exhausted
 signal player_hit(player: Player)
 signal destroyed
 
+var frozen: bool:
+	get: return current_freeze_time > 0
+
 func _process(delta: float):
 	life -= delta
 	if life < 0:
-		queue_free()
-		Explosion.create(self)
-		destroyed.emit()
+		_destroy()
 		return
 	
-	if current_freeze_time > 0:
+	if frozen:
 		current_freeze_time -= delta
 		return
-	
+
+	position.x += speed * direction * delta
+
+func _physics_process(delta: float):
+	if frozen: return
+
 	for body in get_overlapping_bodies():
-		if body is FallingBlock:
+		var falling_block := body as FallingBlock
+		if falling_block:
 			if remaining_hits > 0:
-				body.destroy()
+				falling_block.destroy()
 				current_freeze_time = freeze_time
 				remaining_hits -= 1
 			else:
@@ -39,8 +46,18 @@ func _process(delta: float):
 				queue_free()
 			return
 		
-		if body is Player and body != owner_player and body.is_alive:
+		var player := body as Player
+		if player and player != owner_player and player.is_alive:
 			player_hit.emit(body)
 			return
 	
-	position.x += speed * direction * delta
+	for area in get_overlapping_areas():
+		var flying_block := area as FlyingBlock
+		if flying_block:
+			_destroy()
+			return
+
+func _destroy():
+	queue_free()
+	Explosion.create(self)
+	destroyed.emit()
