@@ -38,4 +38,5 @@ process_material = SubResource("ParticleProcessMaterial_8u50n")
 texture = SubResource("MeshTexture_oa1nv")
 lifetime = 0.8
 explosiveness = 1.0
+fixed_fps = 0
 script = ExtResource("1_doofu")
