@@ -21,7 +21,6 @@ func _run_movement_loop():
 			
 		await _random_timer(0.1, 0.3).timeout
 		
-		
 func _run_decision_loop():
 	while true:
 		player.set_movement([1, -1].pick_random())
@@ -46,8 +45,17 @@ func _run_random_loop(min_period: float, max_period: float, fn: Callable):
 		await _random_timer(min_period, max_period).timeout
 		fn.call()
 
-func _random_timer(min_period: float, max_period: float):
-	return get_tree().create_timer(randf_range(min_period, max_period))
+func _temp_timer(wait_time: float) -> Timer:
+	var timer := Timer.new()
+	timer.wait_time = wait_time
+	timer.one_shot = true
+	timer.timeout.connect(func(): timer.queue_free())
+	add_child(timer)
+	timer.start()
+	return timer
+
+func _random_timer(min_period: float, max_period: float) -> Timer:
+	return _temp_timer(randf_range(min_period, max_period))
 
 func _on_incoming_flying_block_area_entered(node: Area2D):
 	if not node is FlyingBlock: return
@@ -55,7 +63,7 @@ func _on_incoming_flying_block_area_entered(node: Area2D):
 	var is_incoming = node.direction == signf(player.global_position.x - node.global_position.x)
 	if not is_incoming: return
 
-	await get_tree().create_timer(0.1).timeout
+	await _temp_timer(0.1).timeout
 	player.jump()
 
 func _get_players_in_fov() -> Array[Node2D]:
@@ -85,7 +93,7 @@ func _avoid_falling_towards_grabbing_player_without_jumps():
 	player.set_movement(player.global_position.x - closest.global_position.x)
 
 func _get_closest_to_self(a: Node2D, b: Node2D) -> Node2D:
-	var a_distance = a.global_position.direction_to(player.global_position)
-	var b_distance = b.global_position.direction_to(player.global_position)
+	var a_distance := a.global_position.direction_to(player.global_position)
+	var b_distance := b.global_position.direction_to(player.global_position)
 	if a_distance < b_distance: return a
 	return b
