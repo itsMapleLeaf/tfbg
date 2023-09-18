@@ -83,4 +83,10 @@ position = Vector2(-750, -1000)
 [node name="FallingBlockSpawnRight" type="Marker2D" parent="Game"]
 position = Vector2(750, -1000)
 
+[node name="FallingBlockSpawnTimer" type="Timer" parent="Game"]
+wait_time = 0.3
+autostart = true
+
 [node name="UI" type="CanvasLayer" parent="."]
+
+[connection signal="timeout" from="Game/FallingBlockSpawnTimer" to="Game" method="_on_falling_block_spawn_timer_timeout"]

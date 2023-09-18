@@ -26,8 +26,6 @@ func _ready():
 
 	_update_camera(main_player)
 	camera.reset_smoothing()
-	
-	_spawn_falling_blocks()
 
 func _process(delta: float):
 	for player in players:
@@ -35,6 +33,11 @@ func _process(delta: float):
 			_kill_player(player)
 			
 	_update_camera(main_player)
+
+func _on_falling_block_spawn_timer_timeout():
+	var x = randf_range(falling_block_spawn_left.global_position.x, falling_block_spawn_right.global_position.x)
+	var y = randf_range(falling_block_spawn_left.global_position.y, falling_block_spawn_right.global_position.y)
+	_create_falling_block(Vector2(x,y))
 
 func _create_player(color: Color, controller: Node) -> Player:
 	var player := preload("res://player/player.tscn").instantiate() as Player
@@ -63,13 +66,6 @@ func _update_camera(player: Player):
 	else:
 		camera.target_position = camera_wide_view_position_node.global_position
 		camera.target_zoom = Vector2(0.8, 0.8)
-
-func _spawn_falling_blocks():
-	while true:
-		var x = randf_range(falling_block_spawn_left.global_position.x, falling_block_spawn_right.global_position.x)
-		var y = randf_range(falling_block_spawn_left.global_position.y, falling_block_spawn_right.global_position.y)
-		_create_falling_block(Vector2(x,y))
-		await get_tree().create_timer(0.3).timeout
 
 func _create_falling_block(new_position: Vector2):
 	var block := preload("res://blocks/falling_block.tscn").instantiate() as FallingBlock
