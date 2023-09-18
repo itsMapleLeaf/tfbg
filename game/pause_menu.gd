@@ -1,5 +1,5 @@
 class_name PauseMenu
-extends CenterContainer
+extends Panel
 
 signal resume
 
