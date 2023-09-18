@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://cupcyskx0pxoq"]
+
+[ext_resource type="Script" path="res://title_menu/play_button.gd" id="1_xy7cs"]
+[ext_resource type="Script" path="res://title_menu/quit_button.gd" id="2_wx26d"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_6tpvy"]
+font_size = 64
+
+[node name="TitleMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Title" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "That Falling Box Game"
+label_settings = SubResource("LabelSettings_6tpvy")
+
+[node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../QuitButton")
+focus_neighbor_bottom = NodePath("../QuitButton")
+focus_next = NodePath("../QuitButton")
+focus_previous = NodePath("../QuitButton")
+theme_override_font_sizes/font_size = 32
+text = "Play"
+script = ExtResource("1_xy7cs")
+
+[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../PlayButton")
+focus_neighbor_bottom = NodePath("../PlayButton")
+focus_next = NodePath("../PlayButton")
+focus_previous = NodePath("../PlayButton")
+theme_override_font_sizes/font_size = 32
+text = "Quit"
+script = ExtResource("2_wx26d")
