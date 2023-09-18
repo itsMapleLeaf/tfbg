@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://hx2aca570wex"]
+
+[ext_resource type="Script" path="res://game/pause_menu.gd" id="1_fbv7m"]
+[ext_resource type="Theme" uid="uid://ddmwl58e0qtxf" path="res://title_label_theme.tres" id="1_jeniy"]
+[ext_resource type="Theme" uid="uid://ckit4v3f83kan" path="res://button_theme.tres" id="2_h6cr8"]
+
+[node name="PauseMenu" type="CenterContainer" node_paths=PackedStringArray("resume_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fbv7m")
+resume_button = NodePath("VBoxContainer/ResumeButton")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+theme = ExtResource("1_jeniy")
+theme_type_variation = &"HeaderLarge"
+theme_override_constants/line_spacing = -24
+theme_override_font_sizes/font_size = 64
+text = "Paused"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_h6cr8")
+text = "Resume"
+
+[node name="TitleButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_h6cr8")
+text = "Return to Title"
+
+[connection signal="pressed" from="VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/TitleButton" to="." method="_on_title_button_pressed"]

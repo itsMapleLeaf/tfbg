@@ -1,0 +1,86 @@
+[gd_scene load_steps=6 format=3 uid="uid://u5slcikl4yah"]
+
+[ext_resource type="Script" path="res://game/game_scene.gd" id="1_sgbxh"]
+[ext_resource type="Script" path="res://game/game.gd" id="2_1ao5i"]
+[ext_resource type="Script" path="res://game/camera_shaker.gd" id="3_oe53i"]
+[ext_resource type="PackedScene" uid="uid://c8bicjtdgxa1s" path="res://game/game_camera.tscn" id="4_vv23t"]
+[ext_resource type="PackedScene" uid="uid://c51q2dqjhv766" path="res://blocks/map_block.tscn" id="5_wo8mq"]
+
+[node name="GameScene" type="Node"]
+script = ExtResource("1_sgbxh")
+
+[node name="Game" type="Node2D" parent="." node_paths=PackedStringArray("player_spawns", "player_fallout", "camera", "camera_wide_view_position_node", "camera_shaker", "falling_block_spawn_left", "falling_block_spawn_right")]
+script = ExtResource("2_1ao5i")
+player_spawns = NodePath("PlayerSpawns")
+player_fallout = NodePath("Fallout")
+camera = NodePath("CameraShaker/Camera")
+camera_wide_view_position_node = NodePath("CameraWideViewPosition")
+camera_shaker = NodePath("CameraShaker")
+falling_block_spawn_left = NodePath("FallingBlockSpawnLeft")
+falling_block_spawn_right = NodePath("FallingBlockSpawnRight")
+
+[node name="CameraShaker" type="Node2D" parent="Game"]
+script = ExtResource("3_oe53i")
+intensity = 12.0
+damping = 12.0
+
+[node name="Camera" parent="Game/CameraShaker" instance=ExtResource("4_vv23t")]
+
+[node name="CameraWideViewPosition" type="Marker2D" parent="Game"]
+position = Vector2(0, -200)
+gizmo_extents = 50.0
+
+[node name="GameMap" type="Node2D" parent="Game"]
+
+[node name="MapBlock" parent="Game/GameMap" instance=ExtResource("5_wo8mq")]
+scale = Vector2(31, 1)
+
+[node name="MapBlock2" parent="Game/GameMap" instance=ExtResource("5_wo8mq")]
+position = Vector2(0, 50)
+scale = Vector2(29, 1)
+
+[node name="MapBlock3" parent="Game/GameMap" instance=ExtResource("5_wo8mq")]
+position = Vector2(0, 100)
+scale = Vector2(27, 1)
+
+[node name="PlayerSpawns" type="Node2D" parent="Game"]
+
+[node name="PlayerSpawn" type="Marker2D" parent="Game/PlayerSpawns"]
+position = Vector2(0, -500)
+gizmo_extents = 20.0
+
+[node name="PlayerSpawn3" type="Marker2D" parent="Game/PlayerSpawns"]
+position = Vector2(200, -500)
+gizmo_extents = 20.0
+
+[node name="PlayerSpawn4" type="Marker2D" parent="Game/PlayerSpawns"]
+position = Vector2(400, -500)
+gizmo_extents = 20.0
+
+[node name="PlayerSpawn5" type="Marker2D" parent="Game/PlayerSpawns"]
+position = Vector2(-200, -500)
+gizmo_extents = 20.0
+
+[node name="PlayerSpawn6" type="Marker2D" parent="Game/PlayerSpawns"]
+position = Vector2(-400, -500)
+gizmo_extents = 20.0
+
+[node name="PlayerSpawn7" type="Marker2D" parent="Game/PlayerSpawns"]
+position = Vector2(-600, -500)
+gizmo_extents = 20.0
+
+[node name="PlayerSpawn8" type="Marker2D" parent="Game/PlayerSpawns"]
+position = Vector2(600, -500)
+gizmo_extents = 20.0
+
+[node name="Fallout" type="Marker2D" parent="Game"]
+position = Vector2(0, 875)
+gizmo_extents = 100.0
+
+[node name="FallingBlockSpawnLeft" type="Marker2D" parent="Game"]
+position = Vector2(-750, -1000)
+
+[node name="FallingBlockSpawnRight" type="Marker2D" parent="Game"]
+position = Vector2(750, -1000)
+
+[node name="UI" type="CanvasLayer" parent="."]
