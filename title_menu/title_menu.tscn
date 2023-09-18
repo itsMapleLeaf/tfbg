@@ -1,18 +1,18 @@
 [gd_scene load_steps=4 format=3 uid="uid://cupcyskx0pxoq"]
 
-[ext_resource type="Script" path="res://title_menu/play_button.gd" id="1_xy7cs"]
-[ext_resource type="Script" path="res://title_menu/quit_button.gd" id="2_wx26d"]
+[ext_resource type="Script" path="res://title_menu/title_menu.gd" id="1_euc42"]
+[ext_resource type="Theme" uid="uid://ddmwl58e0qtxf" path="res://title_label_theme.tres" id="1_m6n07"]
+[ext_resource type="Theme" uid="uid://ckit4v3f83kan" path="res://button_theme.tres" id="2_722lb"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_6tpvy"]
-font_size = 64
-
-[node name="TitleMenu" type="Control"]
+[node name="TitleMenu" type="Control" node_paths=PackedStringArray("play_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_euc42")
+play_button = NodePath("CenterContainer/VBoxContainer/PlayButton")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -28,22 +28,30 @@ theme_override_constants/separation = 6
 alignment = 1
 
 [node name="Title" type="Label" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-text = "That Falling Box Game"
-label_settings = SubResource("LabelSettings_6tpvy")
+theme = ExtResource("1_m6n07")
+theme_type_variation = &"HeaderLarge"
+theme_override_constants/line_spacing = -24
+theme_override_font_sizes/font_size = 64
+text = "That Falling
+Box Game"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 32
+theme = ExtResource("2_722lb")
 text = "Play"
-script = ExtResource("1_xy7cs")
 
 [node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 32
+theme = ExtResource("2_722lb")
 text = "Quit"
-script = ExtResource("2_wx26d")
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
