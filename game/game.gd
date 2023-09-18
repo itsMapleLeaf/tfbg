@@ -43,6 +43,7 @@ func _create_player(color: Color, controller: Node) -> Player:
 	var player := preload("res://player/player.tscn").instantiate() as Player
 	player.modulate = color
 	player.block_released.connect(_create_flying_block.bind(player))
+	player.respawn_timeout.connect(_respawn_player.bind(player))
 	player.add_child(controller)
 	add_child(player)
 	return player
@@ -55,8 +56,6 @@ func _respawn_player(player: Player):
 func _kill_player(player: Player):
 	if player.kill():
 		camera_shaker.shake()
-		await get_tree().create_timer(2).timeout
-		_respawn_player(player)
 	
 func _update_camera(player: Player):
 	camera.look_enabled = player.is_alive

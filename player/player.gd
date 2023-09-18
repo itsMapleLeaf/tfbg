@@ -26,6 +26,7 @@ var invulnerable_time := MAX_INVULNERABLE_TIME
 
 signal block_released(position: Vector2, direction: int)
 signal found_block
+signal respawn_timeout
 
 var is_alive: bool:
 	get: return state != State.DEAD
@@ -109,6 +110,7 @@ func kill() -> bool:
 	
 	state = State.DEAD
 	jumps = 0
+	$RespawnTimer.start()
 	
 	Explosion.create(self)
 	
@@ -125,3 +127,6 @@ func get_grabbable_block() -> Object:
 func _on_grab_dot_body_entered(body):
 	if body is FallingBlock:
 		found_block.emit()
+
+func _on_respawn_timer_timeout():
+	respawn_timeout.emit()

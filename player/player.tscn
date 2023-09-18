@@ -47,4 +47,9 @@ mesh = SubResource("QuadMesh_iqsty")
 [node name="Hitbox" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(10, 20, 20, 10, 20, -10, 10, -20, -10, -20, -20, -10, -20, 10, -10, 20)
 
+[node name="RespawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
 [connection signal="body_entered" from="Body/GrabDot" to="." method="_on_grab_dot_body_entered"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]
