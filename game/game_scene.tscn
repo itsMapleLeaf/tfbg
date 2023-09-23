@@ -25,6 +25,7 @@ intensity = 12.0
 damping = 12.0
 
 [node name="Camera" parent="Game/CameraShaker" instance=ExtResource("4_vv23t")]
+stiffness = Vector2(12, 12)
 
 [node name="CameraWideViewPosition" type="Marker2D" parent="Game"]
 position = Vector2(0, -200)

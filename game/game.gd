@@ -58,7 +58,6 @@ func _kill_player(player: Player):
 		camera_shaker.shake()
 	
 func _update_camera(player: Player):
-	camera.look_enabled = player.is_alive
 	if player.is_alive:
 		camera.target_position = player.global_position + CAMERA_OFFSET
 		camera.target_zoom = Vector2(1.5, 1.5)
